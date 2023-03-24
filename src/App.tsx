@@ -7,6 +7,7 @@ import PostIcon from '@mui/icons-material/Book'
 import UserIcon from '@mui/icons-material/Group'
 import { Dashboard } from './views/dashboard'
 import { authProvider } from './auth/authProvider'
+import MyLoginPage from './views/login/MyLoginPage'
 
 const dataProvider = jsonServerProvider('https://jsonplaceholder.typicode.com')
 
