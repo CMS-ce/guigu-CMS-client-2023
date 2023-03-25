@@ -2,7 +2,7 @@
 import { DataProvider, fetchUtils } from 'react-admin'
 import { stringify } from 'query-string'
 
-const apiUrl = 'http://localhost:8000/'
+const apiUrl = 'http://localhost:8000'
 const httpClient = fetchUtils.fetchJson
 
 // TypeScript users must reference the type `DataProvider`
@@ -11,19 +11,19 @@ export const dataProvider: DataProvider = {
         const { page, perPage } = params.pagination
         const { field, order } = params.sort
         const query = {
-            // sort: JSON.stringify([field, order]),
+            sort: JSON.stringify([field, order]),
             range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
-            // filter: JSON.stringify(params.filter),
+            filter: JSON.stringify(params.filter),
         }
         const url = `${apiUrl}/${resource}?${stringify(query)}`
 
-        return httpClient(url).then(({ headers, json }) => ({
-            data: json,
-            total: parseInt(
-                (headers.get('content-range') || '0').split('/').pop() || 0,
-                10
-            ),
-        }))
+        return httpClient(url).then(({ headers, json }) => {
+            console.log(json)
+            return {
+                data: json.data,
+                total: json.total,
+            }
+        })
     },
 
     getOne: (resource, params) =>
@@ -35,7 +35,7 @@ export const dataProvider: DataProvider = {
         const query = {
             filter: JSON.stringify({ id: params.ids }),
         }
-        const url = `${apiUrl}/${resource}?${stringify(query)}`
+        const url = `${apiUrl}/${resource}/ids?${stringify(query)}`
         return httpClient(url).then(({ json }) => ({ data: json }))
     },
 
@@ -53,11 +53,8 @@ export const dataProvider: DataProvider = {
         const url = `${apiUrl}/${resource}?${stringify(query)}`
 
         return httpClient(url).then(({ headers, json }) => ({
-            data: json,
-            total: parseInt(
-                (headers.get('content-range') || '0').split('/').pop() || 0,
-                10
-            ),
+            data: json.data,
+            total: json.total,
         }))
     },
 
