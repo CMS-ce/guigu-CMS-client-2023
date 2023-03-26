@@ -35,7 +35,8 @@ const RoleTitle = () => {
 export const RoleEdit = () => (
     <Edit title={<RoleTitle />}>
         <SimpleForm>
-            <TextInput source='name' />
+            <TextInput source='name' label='所属分类' disabled />
+            <TextInput source='name' label='分类名称' />
             <TextInput source='menus' multiline rows={5} />
         </SimpleForm>
     </Edit>
@@ -44,7 +45,8 @@ export const RoleEdit = () => (
 export const RoleCreate = () => (
     <Create>
         <SimpleForm>
-            <TextInput source='name' />
+            <TextInput source='name' label='所属分类' />
+            <TextInput source='name' label='分类名称' />
         </SimpleForm>
     </Create>
 )
