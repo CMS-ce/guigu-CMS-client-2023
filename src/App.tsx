@@ -8,7 +8,7 @@ import UserIcon from '@mui/icons-material/Group'
 import { Dashboard } from './views/dashboard'
 import { authProvider } from './auth/authProvider'
 import MyLoginPage from './views/login/MyLoginPage'
-import { dataProvider } from './api/dataProvider'
+import { dataProvider, myDataProvider } from './api/dataProvider'
 import { RoleCreate, RoleEdit, RoleList } from './views/roles'
 import { ProductCreate, ProductEdit, ProductList } from './views/products'
 import { CategoryCreate, CategoryEdit, CategoryList } from './views/categorys'
@@ -18,7 +18,7 @@ import { CategoryCreate, CategoryEdit, CategoryList } from './views/categorys'
 const App = () => (
     <Admin
         authProvider={authProvider}
-        dataProvider={dataProvider}
+        dataProvider={myDataProvider}
         dashboard={Dashboard}
     >
         <Resource

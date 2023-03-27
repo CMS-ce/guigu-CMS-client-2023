@@ -1,6 +1,7 @@
 // in src/dataProvider.ts
 import { DataProvider, fetchUtils } from 'react-admin'
 import { stringify } from 'query-string'
+import {v4 as uuidv4} from 'uuid'
 
 const apiUrl = 'http://localhost:8000'
 const httpClient = fetchUtils.fetchJson
@@ -58,11 +59,12 @@ export const dataProvider: DataProvider = {
         }))
     },
 
-    update: (resource, params) =>
-        httpClient(`${apiUrl}/${resource}/${params.id}`, {
+    update: (resource, params) => {
+        return httpClient(`${apiUrl}/${resource}/${params.id}`, {
             method: 'PUT',
             body: JSON.stringify(params.data),
-        }).then(({ json }) => ({ data: json })),
+        }).then(({ json }) => ({ data: json }))
+    },
 
     updateMany: (resource, params) => {
         const query = {
@@ -74,13 +76,14 @@ export const dataProvider: DataProvider = {
         }).then(({ json }) => ({ data: json }))
     },
 
-    create: (resource, params) =>
-        httpClient(`${apiUrl}/${resource}`, {
+    create: (resource, params) => {
+        return httpClient(`${apiUrl}/${resource}`, {
             method: 'POST',
             body: JSON.stringify(params.data),
         }).then(({ json }) => ({
             data: json,
-        })),
+        }))
+    },
 
     delete: (resource, params) =>
         httpClient(`${apiUrl}/${resource}/${params.id}`, {
@@ -96,3 +99,55 @@ export const dataProvider: DataProvider = {
         }).then(({ json }) => ({ data: json }))
     },
 }
+
+export const myDataProvider: DataProvider = {
+    ...dataProvider,
+    update: (resource, params) => {
+        if (resource !== 'products') {
+            // fallback to the default implementation
+            return dataProvider.update(resource, params)
+        }
+
+        /**
+         * For posts update only, convert uploaded image in base 64 and attach it to
+         * the `picture` sent property, with `src` and `title` attributes.
+         */
+
+        // Freshly dropped pictures are File objects and must be converted to base64 strings
+        const newPictures = params.data.pictures.filter(
+            (p) => p.rawFile instanceof File
+        )
+        const formerPictures = params.data.pictures.filter(
+            (p) => !(p.rawFile instanceof File)
+        )
+
+        return Promise.all(newPictures.map(convertFileToBase64))
+            .then((base64Pictures) =>
+                base64Pictures.map((picture64) => ({
+                    src: picture64,
+                    title: uuidv4(),
+                }))
+            )
+            .then((transformedNewPictures) =>
+                dataProvider.update(resource, {
+                    id: params.id,
+                    data: {
+                        ...params.data,
+                        pictures: [
+                            ...transformedNewPictures,
+                            ...formerPictures,
+                        ],
+                    },
+                })
+            )
+    },
+}
+
+const convertFileToBase64 = (file) =>
+    new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        reader.onload = () => resolve(reader.result)
+        reader.onerror = reject
+
+        reader.readAsDataURL(file.rawFile)
+    })
