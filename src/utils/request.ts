@@ -30,7 +30,7 @@ export class Request {
             (config: InternalAxiosRequestConfig) => {
                 // 一般会请求拦截里面加token，用于后端的验证
 
-                const token = localStorage.getItem('token') as string
+                const token = localStorage.getItem('jwt_token') as string
 
                 if (token) {
                     config.headers!.Authorization = token

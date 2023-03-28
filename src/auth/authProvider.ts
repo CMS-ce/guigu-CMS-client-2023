@@ -1,15 +1,21 @@
 // in src/authProvider.ts
 
+import authApi from '@/api/authApi'
+import { AuthProvider } from 'react-admin'
+
 // TypeScript users must reference the type: `AuthProvider`
-export const authProvider = {
+export const authProvider: AuthProvider = {
     // called when the user attempts to log in
-    login: ({ username }) => {
+    login: async ({ username, password }) => {
+        const res = await authApi.reqLogin(username, password)
+        localStorage.setItem('jwt_token', res.data.data.access_token)
         localStorage.setItem('username', username)
         // accept all username/password combinations
         return Promise.resolve()
     },
     // called when the user clicks on the logout button
     logout: () => {
+        localStorage.removeItem('jwt_token')
         localStorage.removeItem('username')
         return Promise.resolve()
     },

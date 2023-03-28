@@ -11,7 +11,24 @@ import { v4 as uuidv4 } from 'uuid'
 import axios from 'axios'
 
 const apiUrl = 'http://localhost:8000'
-const httpClient = fetchUtils.fetchJson
+
+// const httpClient = fetchUtils.fetchJson
+const fetchOptions: fetchUtils.Options = {
+    user: {
+        authenticated: true,
+        token: `Bearer ${
+            localStorage.getItem('jwt_token') as string | undefined
+        }`,
+    },
+}
+const httpClient = async (url = '', options = {}) => {
+    const { status, headers, body, json } = await fetchUtils.fetchJson(url, {
+        ...options,
+        ...fetchOptions,
+    })
+    // console.log('fetchJson result', { status, headers, body, json })
+    return { status, headers, body, json }
+}
 
 // TypeScript users must reference the type `DataProvider`
 export const dataProvider: DataProvider = {
@@ -122,10 +139,10 @@ export const myDataProvider: MyDataProvider = {
         }
 
         const newPictures = params.data.pictures.filter(
-            (p) => p.rawFile instanceof File
+            (p: any) => p.rawFile instanceof File
         )
         const formerPictures = params.data.pictures.filter(
-            (p) => !(p.rawFile instanceof File)
+            (p: any) => !(p.rawFile instanceof File)
         )
 
         return Promise.all(newPictures.map(convertFileToBase64))
@@ -153,32 +170,11 @@ export const myDataProvider: MyDataProvider = {
         }
 
         const newPictures = params.data.pictures.filter(
-            (p) => p.rawFile instanceof File
+            (p: any) => p.rawFile instanceof File
         )
         const formerPictures = params.data.pictures.filter(
-            (p) => !(p.rawFile instanceof File)
+            (p: any) => !(p.rawFile instanceof File)
         )
-
-        // const uploadFiles = () => {
-        //     return new Promise((resolve) => {
-        //         params.data.pictures.forEach((picture) => {
-        //             if (picture.rawFile instanceof File) {
-        //                 const fd = new FormData()
-        //                 console.log(picture)
-        //                 fd.append('file', picture)
-        //                 fetch(`${apiUrl}/${resource}/upload`, {
-        //                     method: 'POST',
-        //                     body: fd,
-        //                 })
-        //                     .then((response) => resolve(response.json()))
-        //                     .then((data) => console.log(data))
-        //                     .catch((error) => console.error(error))
-        //             }
-        //         })
-        //     })
-        // }
-
-        // uploadFiles().then(() => {})
 
         return Promise.all(newPictures.map(convertFileToBase64))
             .then((base64Pictures) =>
@@ -197,6 +193,7 @@ export const myDataProvider: MyDataProvider = {
                             ...formerPictures,
                         ],
                     },
+                    previousData: {},
                 })
             )
     },
@@ -209,7 +206,7 @@ export const myDataProvider: MyDataProvider = {
     },
 }
 
-const convertFileToBase64 = (file) =>
+const convertFileToBase64 = (file: any) =>
     new Promise((resolve, reject) => {
         const reader = new FileReader()
         reader.onload = () => resolve(reader.result)

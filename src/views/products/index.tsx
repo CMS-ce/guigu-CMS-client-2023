@@ -25,6 +25,7 @@ import { useCategorys } from '@/hooks/useCategorys'
 import MyStatusField from '@/components/MyStatusField'
 import MyStatusInput from '@/components/MyStatusInput'
 import { Button } from '@mui/material'
+import { useEffect } from 'react'
 
 export const ProductList = () => {
     return (
@@ -65,7 +66,7 @@ export const ProductEdit = () => {
                 {/* <TextInput source='status' label='商品状态' /> */}
                 {/* <MyTextInput source='status' label='商品状态' /> */}
                 <MyStatusInput source='status' />
-                <NumberInput source='price' label='价格'/>
+                <NumberInput source='price' label='价格' />
                 <ImageInput
                     source='pictures'
                     label='商品图片'
@@ -100,7 +101,7 @@ export const ProductCreate = () => {
                 <TextInput source='desc' label='商品描述' />
                 {/* <TextInput source='status' label='商品状态' /> */}
                 <MyStatusInput source='status' />
-                <NumberInput source='price' defaultValue={100} label='价格'/>
+                <NumberInput source='price' defaultValue={100} label='价格' />
                 <ImageInput
                     source='pictures'
                     label={
