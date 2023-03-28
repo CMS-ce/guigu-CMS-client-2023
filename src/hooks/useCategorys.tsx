@@ -1,7 +1,7 @@
 import categoryApi from '@/api/categoryApi'
 import { useAppDispatch } from '@/store/hook'
 import { initCategoryList } from '@/store/services/categorySlice'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 function useCategorys() {
     const [categorys, setCategorys] = useState([])

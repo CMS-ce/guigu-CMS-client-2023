@@ -1,13 +1,10 @@
 // in src/BookList.jsx
-import FullTextEditor from '@/components/FullTextEditor'
 import {
     List,
     Datagrid,
     TextField,
-    EditButton,
     Create,
     Edit,
-    ReferenceInput,
     SimpleForm,
     TextInput,
     useRecordContext,
@@ -17,34 +14,26 @@ import {
     ImageField,
     ImageInput,
 } from 'react-admin'
-import { RichTextInput } from 'ra-input-rich-text'
 import MyRichTextInput from '@/components/MyRichTextInput'
-import { MyTextInput } from '@/components/MyTextInput'
 import AllCategorySelect from '@/components/AllCategorySelect'
 import { useCategorys } from '@/hooks/useCategorys'
 import MyStatusField from '@/components/MyStatusField'
 import MyStatusInput from '@/components/MyStatusInput'
 import { Button } from '@mui/material'
-import { useEffect } from 'react'
 
 export const ProductList = () => {
     return (
         <List resource='products'>
             <Datagrid rowClick='edit'>
-                {/* <TextField source='id' /> */}
                 <TextField source='name' label='商品名称' />
                 <TextField source='desc' label='商品描述' />
                 <NumberField source='price' label='价格' />
                 <MyStatusField source='status' />
-                {/* <TextField source='status' label='状态' /> */}
                 <ReferenceField
                     label='类别'
                     source='categoryId'
                     reference='categorys'
                 />
-                {/* <TextField source='categoryId' label='类别' /> */}
-                {/* <TextField source='detail' /> */}
-                {/* <EditButton /> */}
             </Datagrid>
         </List>
     )
@@ -63,8 +52,6 @@ export const ProductEdit = () => {
             <SimpleForm>
                 <TextInput source='name' />
                 <TextInput source='desc' />
-                {/* <TextInput source='status' label='商品状态' /> */}
-                {/* <MyTextInput source='status' label='商品状态' /> */}
                 <MyStatusInput source='status' />
                 <NumberInput source='price' label='价格' />
                 <ImageInput
@@ -75,16 +62,7 @@ export const ProductEdit = () => {
                 >
                     <ImageField source='src' title='title' />
                 </ImageInput>
-                <AllCategorySelect
-                    source='categoryId'
-                    // format={(formValue) => formValue}
-                    // parse={(inputValue) => inputValue}
-                />
-                {/* <ReferenceInput
-                    label='类别'
-                    source='categoryId'
-                    reference='categorys'
-                /> */}
+                <AllCategorySelect source='categoryId' />
                 <MyRichTextInput source='detail' />
             </SimpleForm>
         </Edit>
@@ -99,7 +77,6 @@ export const ProductCreate = () => {
             <SimpleForm>
                 <TextInput source='name' label='商品名称' />
                 <TextInput source='desc' label='商品描述' />
-                {/* <TextInput source='status' label='商品状态' /> */}
                 <MyStatusInput source='status' />
                 <NumberInput source='price' defaultValue={100} label='价格' />
                 <ImageInput
@@ -119,11 +96,6 @@ export const ProductCreate = () => {
                     <ImageField source='src' title='title' />
                 </ImageInput>
                 <AllCategorySelect source='categoryId' defaultValue={'0'} />
-                {/* <ReferenceInput
-                    label='类别'
-                    source='categoryId'
-                    reference='categorys'
-                /> */}
                 <MyRichTextInput source='detail' />
             </SimpleForm>
         </Create>

@@ -16,7 +16,6 @@ export const RoleList = () => {
     return (
         <List resource='roles'>
             <Datagrid rowClick='edit'>
-                {/* <TextField source='id' /> */}
                 <TextField source='name' label='角色名称' />
                 <TextField source='createAt' label='创建时间' />
                 <TextField source='authName' label='授权人' />

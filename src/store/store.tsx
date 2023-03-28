@@ -1,6 +1,5 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 import { getDefaultMiddleware } from '@reduxjs/toolkit'
-import taskReducer from '../store/services/taskSlice'
 import categoryReducer from '@/store/services/categorySlice'
 import { enableMapSet } from 'immer'
 
@@ -8,7 +7,6 @@ enableMapSet()
 
 export const store = configureStore({
     reducer: {
-        task: taskReducer,
         category: categoryReducer,
     },
     middleware: (getDefaultMiddleware) =>

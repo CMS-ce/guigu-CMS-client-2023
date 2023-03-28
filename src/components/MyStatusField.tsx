@@ -1,8 +1,7 @@
 // in src/MyUrlField.tsx
-import { Resource, useRecordContext } from 'react-admin'
-import { Button, Link } from '@mui/material'
+import { useRecordContext } from 'react-admin'
+import { Button } from '@mui/material'
 import React, { useState } from 'react'
-import productApi from '@/api/productApi'
 import { myDataProvider } from '@/api/dataProvider'
 
 type MyStatusFieldProps = {
@@ -27,13 +26,7 @@ const MyStatusField = ({ source }: MyStatusFieldProps) => {
             },
         })
         setFlag(flag === 1 ? 2 : 1)
-        // const res = await productApi.reqUpdateStatus(
-        //     record['id'] as string,
-        //     record[source]
-        // )
-        // if (res.status === 200) {
-        //     record[source] = !record[source]
-        // }
+       
     }
 
     return record ? (

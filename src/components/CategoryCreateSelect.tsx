@@ -8,7 +8,6 @@ import { useState } from 'react'
 import { useInput } from 'react-admin'
 
 const CategoryCreateSelect = (props) => {
-    // const [selectValue, setSelectValue] = useState('0')
     const categoryList = useAppSelector(selectCategoryList).filter(
         (c) => c.parentId === '0'
     )

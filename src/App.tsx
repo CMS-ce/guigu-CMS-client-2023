@@ -1,5 +1,5 @@
 // in src/App.tsx
-import { Admin, Resource } from 'react-admin'
+import { Admin, Layout, MenuItemLink, Resource } from 'react-admin'
 import { UserCreate, UserEdit, UserList } from './views/users'
 import UserIcon from '@mui/icons-material/Group'
 import { authProvider } from './auth/authProvider'
@@ -50,14 +50,8 @@ const App = () => (
             create={CategoryCreate}
             icon={CategoryIcon}
         />
-        {/* <Resource
-            name='posts'
-            list={PostList}
-            edit={PostEdit}
-            create={PostCreate}
-            icon={PostIcon}
-        /> */}
     </Admin>
 )
+
 
 export default App
