@@ -1,7 +1,8 @@
 // in src/dataProvider.ts
 import { DataProvider, fetchUtils } from 'react-admin'
 import { stringify } from 'query-string'
-import {v4 as uuidv4} from 'uuid'
+import { v4 as uuidv4 } from 'uuid'
+import axios from 'axios'
 
 const apiUrl = 'http://localhost:8000'
 const httpClient = fetchUtils.fetchJson
@@ -104,22 +105,37 @@ export const myDataProvider: DataProvider = {
     ...dataProvider,
     update: (resource, params) => {
         if (resource !== 'products') {
-            // fallback to the default implementation
             return dataProvider.update(resource, params)
         }
 
-        /**
-         * For posts update only, convert uploaded image in base 64 and attach it to
-         * the `picture` sent property, with `src` and `title` attributes.
-         */
-
-        // Freshly dropped pictures are File objects and must be converted to base64 strings
         const newPictures = params.data.pictures.filter(
             (p) => p.rawFile instanceof File
         )
         const formerPictures = params.data.pictures.filter(
             (p) => !(p.rawFile instanceof File)
         )
+        console.log(formerPictures)
+
+        // const uploadFiles = () => {
+        //     return new Promise((resolve) => {
+        //         params.data.pictures.forEach((picture) => {
+        //             if (picture.rawFile instanceof File) {
+        //                 const fd = new FormData()
+        //                 console.log(picture)
+        //                 fd.append('file', picture)
+        //                 fetch(`${apiUrl}/${resource}/upload`, {
+        //                     method: 'POST',
+        //                     body: fd,
+        //                 })
+        //                     .then((response) => resolve(response.json()))
+        //                     .then((data) => console.log(data))
+        //                     .catch((error) => console.error(error))
+        //             }
+        //         })
+        //     })
+        // }
+
+        // uploadFiles().then(() => {})
 
         return Promise.all(newPictures.map(convertFileToBase64))
             .then((base64Pictures) =>
