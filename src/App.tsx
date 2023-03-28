@@ -8,6 +8,9 @@ import { RoleCreate, RoleEdit, RoleList } from './views/roles'
 import { ProductCreate, ProductEdit, ProductList } from './views/products'
 import { CategoryCreate, CategoryEdit, CategoryList } from './views/categorys'
 import DashBoard from './views/dashboard'
+import CategoryIcon from '@mui/icons-material/Category'
+import WebhookIcon from '@mui/icons-material/Webhook'
+import IntegrationInstructionsIcon from '@mui/icons-material/IntegrationInstructions'
 
 // const dataProvider = jsonServerProvider('https://jsonplaceholder.typicode.com')
 
@@ -30,12 +33,14 @@ const App = () => (
             list={RoleList}
             edit={RoleEdit}
             create={RoleCreate}
+            icon={WebhookIcon}
         />
         <Resource
             name='products'
             list={ProductList}
             edit={ProductEdit}
             create={ProductCreate}
+            icon={IntegrationInstructionsIcon}
         />
         <Resource
             name='categorys'
@@ -43,6 +48,7 @@ const App = () => (
             list={CategoryList}
             edit={CategoryEdit}
             create={CategoryCreate}
+            icon={CategoryIcon}
         />
         {/* <Resource
             name='posts'
