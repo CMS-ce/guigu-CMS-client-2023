@@ -1,5 +1,11 @@
 // in src/dataProvider.ts
-import { DataProvider, fetchUtils } from 'react-admin'
+import {
+    DataProvider,
+    RaRecord,
+    UpdateParams,
+    UpdateResult,
+    fetchUtils,
+} from 'react-admin'
 import { stringify } from 'query-string'
 import { v4 as uuidv4 } from 'uuid'
 import axios from 'axios'
@@ -20,7 +26,6 @@ export const dataProvider: DataProvider = {
         const url = `${apiUrl}/${resource}?${stringify(query)}`
 
         return httpClient(url).then(({ headers, json }) => {
-            console.log(json)
             return {
                 data: json.data,
                 total: json.total,
@@ -101,8 +106,47 @@ export const dataProvider: DataProvider = {
     },
 }
 
-export const myDataProvider: DataProvider = {
+interface MyDataProvider<ResourceType extends string = string>
+    extends DataProvider {
+    updateStatus: <RecordType extends RaRecord = any>(
+        resource: ResourceType,
+        params: UpdateParams
+    ) => Promise<UpdateResult<RecordType>>
+}
+
+export const myDataProvider: MyDataProvider = {
     ...dataProvider,
+    create: (resource, params) => {
+        if (resource !== 'products') {
+            return dataProvider.create(resource, params)
+        }
+
+        const newPictures = params.data.pictures.filter(
+            (p) => p.rawFile instanceof File
+        )
+        const formerPictures = params.data.pictures.filter(
+            (p) => !(p.rawFile instanceof File)
+        )
+
+        return Promise.all(newPictures.map(convertFileToBase64))
+            .then((base64Pictures) =>
+                base64Pictures.map((picture64) => ({
+                    src: picture64,
+                    title: uuidv4(),
+                }))
+            )
+            .then((transformedNewPictures) =>
+                dataProvider.create(resource, {
+                    data: {
+                        ...params.data,
+                        pictures: [
+                            ...transformedNewPictures,
+                            ...formerPictures,
+                        ],
+                    },
+                })
+            )
+    },
     update: (resource, params) => {
         if (resource !== 'products') {
             return dataProvider.update(resource, params)
@@ -114,7 +158,6 @@ export const myDataProvider: DataProvider = {
         const formerPictures = params.data.pictures.filter(
             (p) => !(p.rawFile instanceof File)
         )
-        console.log(formerPictures)
 
         // const uploadFiles = () => {
         //     return new Promise((resolve) => {
@@ -156,6 +199,13 @@ export const myDataProvider: DataProvider = {
                     },
                 })
             )
+    },
+
+    updateStatus: (resource, params) => {
+        return httpClient(`${apiUrl}/${resource}/${params.id}`, {
+            method: 'PATCH',
+            body: JSON.stringify(params.data),
+        }).then(({ json }) => ({ data: json }))
     },
 }
 

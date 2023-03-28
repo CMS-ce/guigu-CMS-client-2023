@@ -23,10 +23,9 @@ const AllCategorySelect = (props) => {
 
     return (
         <FormControl sx={{ m: 1, minWidth: 300 }}>
-            <InputLabel htmlFor='grouped-parentCategory-select'>
-                父级分类
-            </InputLabel>
+            <InputLabel id='grouped-parentCategory-select'>父级分类</InputLabel>
             <Select
+                labelId='grouped-parentCategory-select'
                 required
                 id='grouped-parentCategory-select'
                 // value={selectValue}

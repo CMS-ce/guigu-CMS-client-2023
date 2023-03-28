@@ -22,6 +22,9 @@ import MyRichTextInput from '@/components/MyRichTextInput'
 import { MyTextInput } from '@/components/MyTextInput'
 import AllCategorySelect from '@/components/AllCategorySelect'
 import { useCategorys } from '@/hooks/useCategorys'
+import MyStatusField from '@/components/MyStatusField'
+import MyStatusInput from '@/components/MyStatusInput'
+import { Button } from '@mui/material'
 
 export const ProductList = () => {
     return (
@@ -31,7 +34,8 @@ export const ProductList = () => {
                 <TextField source='name' label='商品名称' />
                 <TextField source='desc' label='商品描述' />
                 <NumberField source='price' label='价格' />
-                <TextField source='status' label='状态' />
+                <MyStatusField source='status' />
+                {/* <TextField source='status' label='状态' /> */}
                 <ReferenceField
                     label='类别'
                     source='categoryId'
@@ -58,7 +62,10 @@ export const ProductEdit = () => {
             <SimpleForm>
                 <TextInput source='name' />
                 <TextInput source='desc' />
-                <NumberInput source='price' />
+                {/* <TextInput source='status' label='商品状态' /> */}
+                {/* <MyTextInput source='status' label='商品状态' /> */}
+                <MyStatusInput source='status' />
+                <NumberInput source='price' label='价格'/>
                 <ImageInput
                     source='pictures'
                     label='商品图片'
@@ -91,15 +98,20 @@ export const ProductCreate = () => {
             <SimpleForm>
                 <TextInput source='name' label='商品名称' />
                 <TextInput source='desc' label='商品描述' />
-                <TextInput
-                    source='price'
-                    type='number'
-                    label='价格'
-                    defaultValue={100}
-                />
-                 <ImageInput
+                {/* <TextInput source='status' label='商品状态' /> */}
+                <MyStatusInput source='status' />
+                <NumberInput source='price' defaultValue={100} label='价格'/>
+                <ImageInput
                     source='pictures'
-                    label='商品图片'
+                    label={
+                        <Button
+                            variant='outlined'
+                            size='small'
+                            sx={{ minWidth: '100%' }}
+                        >
+                            商 品 图 片
+                        </Button>
+                    }
                     accept='image/*'
                     multiple
                 >
