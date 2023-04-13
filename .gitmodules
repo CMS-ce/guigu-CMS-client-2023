@@ -1,0 +1,3 @@
+[submodule "guigu-CMS-server-2023"]
+	path = guigu-CMS-server-2023
+	url = https://github.com/CMS-ce/guigu-CMS-server-2023
