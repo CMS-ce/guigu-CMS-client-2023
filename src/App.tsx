@@ -1,5 +1,11 @@
 // in src/App.tsx
-import { Admin, Layout, MenuItemLink, Resource } from 'react-admin'
+import {
+    Admin,
+    CustomRoutes,
+    Layout,
+    MenuItemLink,
+    Resource,
+} from 'react-admin'
 import { UserCreate, UserEdit, UserList } from './views/users'
 import UserIcon from '@mui/icons-material/Group'
 import { authProvider } from './auth/authProvider'
@@ -11,6 +17,8 @@ import DashBoard from './views/dashboard'
 import CategoryIcon from '@mui/icons-material/Category'
 import WebhookIcon from '@mui/icons-material/Webhook'
 import IntegrationInstructionsIcon from '@mui/icons-material/IntegrationInstructions'
+import Test from './views/test'
+import { Route } from "react-router-dom";
 
 // const dataProvider = jsonServerProvider('https://jsonplaceholder.typicode.com')
 
@@ -50,8 +58,10 @@ const App = () => (
             create={CategoryCreate}
             icon={CategoryIcon}
         />
+        <CustomRoutes>
+            <Route path='/test' element={<Test />} />
+        </CustomRoutes>
     </Admin>
 )
-
 
 export default App

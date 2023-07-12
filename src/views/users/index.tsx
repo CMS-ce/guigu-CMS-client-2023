@@ -3,8 +3,8 @@ import {
     Datagrid,
     Edit,
     EditButton,
-    EmailField,
     List,
+    ReferenceArrayInput,
     ReferenceField,
     ReferenceInput,
     SimpleForm,
@@ -37,7 +37,7 @@ export const UserEdit = () => (
             <TextInput source='username' label='用户名' />
             <TextInput source='phone' label='手机号' />
             <TextInput source='email' label='邮箱' />
-            <ReferenceInput label='角色' source='roleId' reference='roles' />
+            <ReferenceArrayInput source='roleId' reference='roles' />
         </SimpleForm>
     </Edit>
 )
